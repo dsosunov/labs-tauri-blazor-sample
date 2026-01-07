@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "tauri-app",
+  "version": "0.1.0",
+  "identifier": "com.tauri-app.app",
+  "build": {
+    "beforeDevCommand": "dotnet watch run --project src/TauriApp.csproj",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "dotnet publish -c release src/TauriApp.csproj -o dist",
+    "frontendDist": "../dist/wwwroot"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Tauri with .NET 10 Blazor Application",
+        "width": 800,
+        "height": 600,
+        "useHttpsScheme": true,
+        "devtools": true
+      }
+    ],
+    "security": {
+      "csp": {
+        "default-src": "'self' customprotocol: asset:",
+        "base-uri": "'self'",
+        "object-src": "'none'",
+        "img-src": "'self' asset: http://asset.localhost blob: data:",
+        "style-src": "'unsafe-inline' 'self' https://fonts.googleapis.com",
+        "font-src": [
+          "https://fonts.gstatic.com"
+        ],
+        "script-src": "'self' 'unsafe-eval'",
+        "connect-src": "'self' https://tauri.localhost https://ipc.localhost https://id.aws.iplabs.site https://cognito-idp.ca-central-1.amazonaws.com https://ca-central-1hmntdcup6.auth.ca-central-1.amazoncognito.com",
+        "frame-src": "https://tauri.localhost https://id.aws.iplabs.site https://ca-central-1hmntdcup6.auth.ca-central-1.amazoncognito.com",
+        "frame-ancestors": "'self'"
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}

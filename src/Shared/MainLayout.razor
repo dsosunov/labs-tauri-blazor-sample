@@ -1,0 +1,16 @@
+@inherits LayoutComponentBase
+
+<div class="app-shell">
+    <header class="app-header">
+        <div class="app-header-inner">
+            <a class="app-title" href="/">TauriApp</a>
+            <div class="app-auth">
+                <LoginDisplay />
+            </div>
+        </div>
+    </header>
+
+    <main class="app-content">
+        @Body
+    </main>
+</div>

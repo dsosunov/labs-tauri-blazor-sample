@@ -1,0 +1,25 @@
+﻿@page "/authentication/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject NavigationManager Navigation
+@inject IConfiguration Configuration
+
+<RemoteAuthenticatorView Action="@Action">
+    <LogOut>
+        @{
+            var cognitoDomain = Configuration["Cognito:AuthorityDomain"];
+            var clientId = Configuration["Cognito:ClientId"];
+
+            var logoutUri = $"{Navigation.BaseUri}";
+
+            var cognitoLogoutUrl = $"{cognitoDomain}/logout?client_id={clientId}&logout_uri={Uri.EscapeDataString(logoutUri)}";
+
+            Navigation.NavigateToLogout(cognitoLogoutUrl, "/");
+        }
+    </LogOut>
+</RemoteAuthenticatorView>
+
+@code {
+    [Parameter]
+    public string? Action { get; set; }
+}

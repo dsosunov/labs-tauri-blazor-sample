@@ -1,0 +1,21 @@
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <span class="auth-user">@context.User.Identity?.Name</span>
+        <button type="button" @onclick="Logout">Logout</button>
+    </Authorized>
+    <NotAuthorized>
+        <button type="button" @onclick="Login">Login</button>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private void Login()
+        => Navigation.NavigateToLogin("authentication/login");
+
+    private void Logout()
+        => Navigation.NavigateToLogout("authentication/logout");
+}
