@@ -16,9 +16,11 @@ pub fn run() {
 
             // On Linux, when we detect navigation to our OAuth callback URL,
             // re-navigate with a marker to bypass WebKit's blocking behavior
+            // Skip error responses (e.g., login_required, access_denied)
             #[cfg(target_os = "linux")]
             if url.as_str().starts_with("tauri://localhost/authentication/")
-                && !url.as_str().contains("_handled=1") {
+                && !url.as_str().contains("_handled=1")
+                && !url.as_str().contains("error=") {
                 println!("[Navigation] Detected OAuth callback, re-navigating via WebView API");
                 let mut modified_url = url.clone();
                 modified_url.set_query(Some(&format!("{}&_handled=1",
