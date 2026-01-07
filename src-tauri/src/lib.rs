@@ -17,11 +17,9 @@ pub fn run() {
             // On Linux, when we detect navigation to our OAuth callback URL,
             // immediately navigate to it using the WebView API to ensure it loads
             #[cfg(target_os = "linux")]
-            if url.starts_with("tauri://localhost/authentication/login-callback") {
+            if url.as_str().starts_with("tauri://localhost/authentication/login-callback") {
                 println!("[Navigation] Detected OAuth callback, re-navigating via WebView API");
-                if let Ok(parsed_url) = url.parse() {
-                    let _ = webview.navigate(parsed_url);
-                }
+                let _ = webview.navigate(url.clone());
             }
         })
         .run(tauri::generate_context!())
