@@ -11,8 +11,18 @@ pub fn run() {
         .plugin(tauri_plugin_prevent_default::init())
         .invoke_handler(tauri::generate_handler![greet])
         .on_page_load(|webview, payload| {
-            // Log navigation - this catches all page loads at webview level
-            println!("[Navigation] {} -> {}", webview.label(), payload.url());
+            let url = payload.url();
+            println!("[Navigation] {} -> {}", webview.label(), url);
+
+            // On Linux, when we detect navigation to our OAuth callback URL,
+            // immediately navigate to it using the WebView API to ensure it loads
+            #[cfg(target_os = "linux")]
+            if url.starts_with("tauri://localhost/authentication/login-callback") {
+                println!("[Navigation] Detected OAuth callback, re-navigating via WebView API");
+                if let Ok(parsed_url) = url.parse() {
+                    let _ = webview.navigate(parsed_url);
+                }
+            }
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
